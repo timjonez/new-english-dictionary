@@ -142,4 +142,18 @@ python3 pagefile.py text/01-AB/0135.md text/01-AB/0136.md
 
 Use your own paths. `python3 pagefile.py text/01-AB/0134.md` is the same command on a worked page.
 
+The checker prints `flags N` after the headwords. A valid file still exits 0. The next section says what to do with that list.
+
 Do not insert into SQLite as the contribution. `build.py` turns page files into a database later. It is not the way to record a page.
+
+## Read the page again
+
+When the file is written, read that scan once more before you call the page finished. Then run the checker. The flag list is part of the pull request.
+
+Each flag is a token to compare with the scan:
+
+- a rare word one letter away from a very common word, such as `mast` beside `most`
+- a token that is not an English word and is one confusable letter away from a word that is, such as `coberent` beside `coherent` or `Papat` beside `papal`
+- a one- or two-digit number between two ordinary words, such as `there 10 multiplied`
+
+For each flag, look at that spot on the scan. Keep the letters the scan prints, including a printer's error and an old spelling. Where the scan shows different letters, change the file to those letters. Where a glyph is still unreadable, write `[…]`, set `status` to `partial`, and give a `reason`. The word after the arrow is a hint about what a misreading would look like. `ok` waits for a second person. Leave your own pages at `draft`.

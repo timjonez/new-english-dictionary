@@ -39,6 +39,13 @@ class WorkedPagesTest(unittest.TestCase):
         self.assertIn("scan 134", result.stdout)
         self.assertIn("folio 110", result.stdout)
         self.assertIn("entries 29", result.stdout)
+        self.assertIn("mast → most", result.stdout)
+        self.assertIn("coberent → coherent", result.stdout)
+        self.assertIn("papat → papal", result.stdout)
+        self.assertIn("\n  10\n", result.stdout)
+        self.assertIn("flags 10\n", result.stdout)
+        self.assertIn("flags 6\n", result.stdout)
+        self.assertNotIn("hare →", result.stdout)
 
     def test_builder_joins_adhesion_and_refuses_bad_outputs(self) -> None:
         folio_109 = pagefile.parse(PAGE_109.read_text(encoding="utf-8"))

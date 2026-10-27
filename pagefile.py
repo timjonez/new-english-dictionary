@@ -6,8 +6,10 @@
 
 from __future__ import annotations
 
+import re
 import sys
 from dataclasses import dataclass
+from functools import lru_cache
 from pathlib import Path
 
 STATUSES = ("draft", "ok", "partial", "unreadable", "skip")
@@ -217,6 +219,153 @@ def _check_blocks(page: Page) -> None:
             raise PageError(f"entry {headword} has an empty body")
 
 
+WORD_LIST = Path(__file__).resolve().parent / "words.txt"
+# words.txt is most-frequent first. A token rarer than RARE_RANK, one letter
+# away from a word in the top COMMON_RANK, is the mast/most shape. A token
+# that is not a word at all, one confusable letter from a word that is, is
+# the coberent/coherent and Papat/papal shape. u/v and i/y are old spelling.
+RARE_RANK = 15000
+COMMON_RANK = 400
+RARE_RATIO = 50
+UNKNOWN_MIN = 5
+CONFUSABLE = {frozenset(pair) for pair in ("bh", "tl", "ce", "mn", "un", "rn", "ao", "cl", "fi")}
+TOKEN = re.compile(r"[A-Za-z]+(?:'[A-Za-z]+)?|\d+")
+LETTERS = "abcdefghijklmnopqrstuvwxyz"
+HISTORICAL = {("u", "v"), ("v", "u"), ("i", "y"), ("y", "i")}
+# A stress dot splits Adia·phory into two tokens. A hyphen does not: spore-cases is a word.
+JOINERS = set("·•‧∙")
+
+
+@dataclass(frozen=True)
+class Flag:
+    token: str
+    suggestion: str | None
+    line: str
+
+
+def _word_list() -> dict[str, int]:
+    ranked: dict[str, int] = {}
+    for line in WORD_LIST.read_text(encoding="utf-8").splitlines():
+        word = line.strip().lower()
+        if not word or word.startswith("#") or not word.isalpha():
+            continue
+        if word not in ranked:
+            ranked[word] = len(ranked)
+    return ranked
+
+
+def _substitutions(word: str) -> list[tuple[str, str, str]]:
+    found: list[tuple[str, str, str]] = []
+    for index, old in enumerate(word):
+        for letter in LETTERS:
+            if letter != old:
+                found.append((word[:index] + letter + word[index + 1 :], old, letter))
+    return found
+
+
+def _historical(old: str, new: str) -> bool:
+    diffs = [(a, b) for a, b in zip(old, new) if a != b]
+    return len(diffs) == 1 and diffs[0] in HISTORICAL
+
+
+def _prefer(source: str, candidates: list[str], ranked: dict[str, int]) -> str | None:
+    if not candidates:
+        return None
+    # Keep the first letter when a neighbor does. mast is nearer most than last.
+    return min(candidates, key=lambda word: (word[:1] != source[:1], ranked[word]))
+
+
+def _bounded(line: str, start: int, end: int) -> bool:
+    if start and line[start - 1].isalpha():
+        return False
+    if end < len(line) and line[end].isalpha():
+        return False
+    return True
+
+
+@lru_cache(maxsize=1)
+def _loaded_words() -> dict[str, int]:
+    return _word_list()
+
+
+def flags_for_text(text: str) -> list[Flag]:
+    """Tokens to read again on the scan. This does not change the text."""
+    ranked = _loaded_words()
+    found: list[Flag] = []
+    seen: set[tuple[str, str | None]] = set()
+    for raw_line in text.splitlines():
+        matches = list(TOKEN.finditer(raw_line))
+        for index, match in enumerate(matches):
+            token = match.group()
+            if not _bounded(raw_line, match.start(), match.end()):
+                continue
+            if token.isdigit():
+                if len(token) > 2 or index == 0 or index + 1 == len(matches):
+                    continue
+                previous = matches[index - 1].group()
+                following = matches[index + 1].group()
+                # "also 7" is a century label. A capital after the number is a quotation.
+                if previous.lower() == "also":
+                    continue
+                if not (previous.isalpha() and following.isalpha() and len(previous) >= 3 and len(following) >= 3):
+                    continue
+                if not (previous[:1].islower() and following[:1].islower()):
+                    continue
+                key = (token, None)
+                if key in seen:
+                    continue
+                seen.add(key)
+                found.append(Flag(token, None, raw_line.strip()))
+                continue
+            # Small caps are stored as capitals. "Tong." is a title abbreviation.
+            # A lowercase word before a period is the end of a sentence.
+            followed_by_period = match.end() < len(raw_line) and raw_line[match.end()] == "."
+            if token.isupper() or (followed_by_period and token[:1].isupper()):
+                continue
+            if match.start() and raw_line[match.start() - 1] in JOINERS:
+                continue
+            if match.end() < len(raw_line) and raw_line[match.end()] in JOINERS:
+                continue
+            word = token.lower()
+            if not word.isascii() or not word.isalpha() or len(word) > 18:
+                continue
+            suggestion: str | None = None
+            if word in ranked:
+                if ranked[word] < RARE_RANK or len(word) < 4:
+                    continue
+                candidates = [
+                    new
+                    for new, _old, _letter in _substitutions(word)
+                    if new in ranked and ranked[new] < COMMON_RANK and not _historical(word, new)
+                ]
+                suggestion = _prefer(word, candidates, ranked)
+                if suggestion is not None and ranked[word] / (ranked[suggestion] + 1) < RARE_RATIO:
+                    suggestion = None
+            elif len(word) >= UNKNOWN_MIN:
+                candidates = [
+                    new
+                    for new, old, letter in _substitutions(word)
+                    if frozenset((old, letter)) in CONFUSABLE and new in ranked and not _historical(word, new)
+                ]
+                suggestion = _prefer(word, candidates, ranked)
+            if suggestion is None:
+                continue
+            key = (word, suggestion)
+            if key in seen:
+                continue
+            seen.add(key)
+            found.append(Flag(word, suggestion, raw_line.strip()))
+    return found
+
+
+def flags_for_page(page: Page) -> list[Flag]:
+    parts: list[str] = []
+    if page.continues:
+        parts.append(page.continues)
+    parts.extend(body for _headword, body in page.entries)
+    return flags_for_text("\n".join(parts))
+
+
 def main(argv: list[str]) -> int:
     if not argv or argv[0] in ("-h", "--help"):
         print("usage: pagefile.py text/<volume>/<scan>.md", file=sys.stderr)
@@ -237,6 +386,14 @@ def main(argv: list[str]) -> int:
         print(f"{page.volume}  scan {page.scan}  folio {folio}  {page.status}  continues {cont}  entries {len(page.entries)}")
         for headword, _body in page.entries:
             print(f"  {headword}")
+        page_flags = flags_for_page(page)
+        print(f"flags {len(page_flags)}")
+        for flag in page_flags:
+            if flag.suggestion is None:
+                print(f"  {flag.token}")
+            else:
+                print(f"  {flag.token} → {flag.suggestion}")
+            print(f"    {flag.line}")
     return 1 if failed else 0
 
 

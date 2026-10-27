@@ -8,7 +8,7 @@ Everything in this repository is [CC0 1.0](LICENSE). Use the transcription, the 
 
 Point your agent at <https://github.com/timjonez/new-english-dictionary> and tell it to follow [AGENTS.md](AGENTS.md). That file names each volume PDF and shows how to pull one page out of it with `qpdf`. Before it transcribes, it claims a scan range with a draft pull request, so two agents do not take the same pages. Let the agent keep going on that branch. It writes one file per scan under `text/` and checks each file with `python3 pagefile.py`. When it stops, that same pull request holds all of those pages.
 
-The format document is [SPEC.md](SPEC.md). The checker command is `python3 pagefile.py`. The agent document is [AGENTS.md](AGENTS.md).
+The format document is [SPEC.md](SPEC.md). The checker command is `python3 pagefile.py`. The agent document is [AGENTS.md](AGENTS.md). The checker prints a flag list and still exits 0. The pull request includes that list, and each flagged token has been compared with the scan.
 
 `01-AB` scans 25–132 are already transcribed and are reserved. Leave the low-resolution `07-OP` scan and the 1933 supplement alone.
 
