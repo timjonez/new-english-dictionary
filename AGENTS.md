@@ -9,8 +9,9 @@ The format is [SPEC.md](SPEC.md). A person adding pages by hand starts at [READM
 - Transcribe from the Archive.org scan only. Do not consult another edition, transcription, or website.
 - Write a page file for every scan you finish. Do not insert into SQLite as the contribution.
 - Work forward in scan order so each continuation meets the page before it.
+- Claim that range with a draft pull request before transcribing it.
 - Run the page checker on every file.
-- Open one pull request with all of those files.
+- Put every finished page from the session in that same pull request.
 - Do not transcribe the low-resolution `07-OP` scan or the 1933 supplement.
 - Do not redo `01-AB` scans 25–132, which are already transcribed in the local database and are not page files yet.
 
@@ -75,11 +76,51 @@ qpdf 03-DE.pdf --pages . 1 -- page-0001.pdf
 - Do not transcribe the 1933 supplement (`11-sup`).
 - Do not redo `01-AB` scans 25–132. Those pages are already transcribed in the maintainer's local database and are not page files in this repository yet. Do not add `text/01-AB/0025.md` through `text/01-AB/0132.md`.
 
-## How far to go
+## Claim a range first
 
-A file that is not in `text/` is free, except the reserved scans above. Start at the first free scan and continue in order. Do not add an empty placeholder. Transcribe for as long as the session lasts. One pull request contains every page from that run.
+Do this before transcribing. Two sessions that both start at the next free scan will duplicate the work.
 
-The filename is `text/<volume>/<scan>.md`. The scan number is zero-padded to four digits. Scan 135 of volume `01-AB` is `text/01-AB/0135.md`. The worked pages already in the tree are `text/01-AB/0133.md` (folio 109) and `text/01-AB/0134.md` (folio 110). Leave them unless you are correcting a reading. The next free scan in `01-AB` is 135.
+1. Read open pull requests:
+
+```bash
+gh pr list --repo timjonez/new-english-dictionary --state open --json number,title,updatedAt,isDraft
+```
+
+A claim is an open pull request whose title is a volume and an inclusive scan range, such as `01-AB 135-160`.
+
+2. Also skip scans that already have a file under `text/`, the reserved `01-AB` scans 25–132, all of `07-OP`, and all of `11-sup`.
+
+3. Pick a contiguous block you expect to finish in this session. Do not claim a whole volume. In `01-AB` the worked pages are scans 133 and 134, so the next free scan is 135 unless an open pull request already claims it.
+
+4. A claim with no push for 48 hours has expired. `updatedAt` is the last activity. Comment on that pull request, close it, and claim the range yourself:
+
+```bash
+gh pr comment NUMBER --repo timjonez/new-english-dictionary --body "This claim expired after 48 hours without a push. Closing it."
+gh pr close NUMBER --repo timjonez/new-english-dictionary
+```
+
+5. On a new branch, add `claims/<volume>-<start>-<end>.md` and open a draft pull request whose title is the range. For scans 135–160 of `01-AB` the file is `claims/01-AB-0135-0160.md`:
+
+```markdown
+---
+volume: 01-AB
+start: 135
+end: 160
+claimed: 2026-10-27T18:00:00Z
+---
+```
+
+`claimed` is the current UTC time. The pull request:
+
+```bash
+gh pr create --repo timjonez/new-english-dictionary --draft --title "01-AB 135-160" --body "Claiming this range. Pages will follow on this branch."
+```
+
+6. Transcribe onto that branch, in order, and check every file. If you finish the block and still have usage, look again for a claim on the next scans, then raise `end` in the claim file and in the pull request title before you continue.
+
+7. Remove the claim file in this pull request once the page files are in it, so the claim file is not merged. Mark the pull request ready. The page files are the record after merge.
+
+The filename for a page is `text/<volume>/<scan>.md`. The scan number is zero-padded to four digits. Scan 135 of volume `01-AB` is `text/01-AB/0135.md`. Leave scans 133 and 134 unless you are correcting a reading.
 
 ## Write the file
 

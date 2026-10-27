@@ -113,7 +113,7 @@ An article that started on an earlier page stays open until a later page settles
 
 ## Contributing
 
-Transcribe consecutive scans for as long as the session lasts. Put every finished page in one pull request. `draft` can merge before the second reading. The person who set `ok` is someone other than the person who wrote the file.
+Claim a scan range with a draft pull request before transcribing it, as [AGENTS.md](AGENTS.md) describes. Transcribe that range for as long as the session lasts. Put every finished page in that same pull request. `draft` can merge before the second reading. The person who set `ok` is someone other than the person who wrote the file.
 
 `python3 pagefile.py text/01-AB/0134.md` exits 0 when the file follows this spec.
 
