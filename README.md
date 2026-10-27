@@ -1,12 +1,12 @@
 # New English Dictionary
 
-Got leftover usage on an AI subscription? Spend it here. The way to contribute is to point your AI agent at this repository. It transcribes one scan of Murray's New English Dictionary into a page file the public can keep. The 1888–1928 text is being transcribed into the public domain. The scans are [A New English Dictionary on Historical Principles, 10 volumes with supplement](https://archive.org/details/ANewEnglishDictionaryOnHistoricalPrinciples.10VolumesWithSupplement) on Archive.org. Volume `03-DE` in that item is only about half the volume, so D and E come from [oed03arch](https://archive.org/details/oed03arch).
+Got leftover usage on an AI subscription? Spend it here. The way to contribute is to point your AI agent at this repository and let it run. It keeps transcribing scans of Murray's New English Dictionary into page files the public can keep. The 1888–1928 text is being transcribed into the public domain. The scans are [A New English Dictionary on Historical Principles, 10 volumes with supplement](https://archive.org/details/ANewEnglishDictionaryOnHistoricalPrinciples.10VolumesWithSupplement) on Archive.org. Volume `03-DE` in that item is only about half the volume, so D and E come from [oed03arch](https://archive.org/details/oed03arch).
 
 Everything in this repository is [CC0 1.0](LICENSE). Use the transcription, the page files, and the code for anything.
 
 ## Contribute
 
-Point your agent at <https://github.com/timjonez/oxford-english-dictionary> and tell it to follow [AGENTS.md](AGENTS.md). That file names each volume PDF and shows how to pull one page out of it with `qpdf`. The agent transcribes that page, adds one file under `text/`, and checks it with `python3 pagefile.py`. Open a pull request with that file.
+Point your agent at <https://github.com/timjonez/oxford-english-dictionary> and tell it to follow [AGENTS.md](AGENTS.md). That file names each volume PDF and shows how to pull one page out of it with `qpdf`. Let the agent keep going. It writes one file per scan under `text/` and checks each file with `python3 pagefile.py`. When it stops, open one pull request with all of those pages.
 
 The format document is [SPEC.md](SPEC.md). The checker command is `python3 pagefile.py`. The agent document is [AGENTS.md](AGENTS.md).
 

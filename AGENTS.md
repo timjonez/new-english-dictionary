@@ -1,15 +1,16 @@
-# Transcribing a page
+# Transcribing pages
 
-Add one missing page file. The contribution is that file. Do not insert into SQLite.
+Keep going for the whole session. Each scan becomes one file under `text/`. When the session ends, one pull request holds every page from that run. Do not insert into SQLite.
 
-The format is [SPEC.md](SPEC.md). A person adding a page by hand starts at [README.md](README.md).
+The format is [SPEC.md](SPEC.md). A person adding pages by hand starts at [README.md](README.md).
 
 ## What to do
 
 - Transcribe from the Archive.org scan only. Do not consult another edition, transcription, or website.
-- Write one page file, and do not insert into SQLite as the contribution.
-- Run the page checker.
-- Claim a page by adding its missing file.
+- Write a page file for every scan you finish. Do not insert into SQLite as the contribution.
+- Work forward in scan order so each continuation meets the page before it.
+- Run the page checker on every file.
+- Open one pull request with all of those files.
 - Do not transcribe the low-resolution `07-OP` scan or the 1933 supplement.
 - Do not redo `01-AB` scans 25–132, which are already transcribed in the local database and are not page files yet.
 
@@ -74,11 +75,11 @@ qpdf 03-DE.pdf --pages . 1 -- page-0001.pdf
 - Do not transcribe the 1933 supplement (`11-sup`).
 - Do not redo `01-AB` scans 25–132. Those pages are already transcribed in the maintainer's local database and are not page files in this repository yet. Do not add `text/01-AB/0025.md` through `text/01-AB/0132.md`.
 
-## Claim a page
+## How far to go
 
-A file that is not in `text/` is free, except the reserved scans above. Claim it by adding that file. Do not add an empty placeholder. One page per contribution.
+A file that is not in `text/` is free, except the reserved scans above. Start at the first free scan and continue in order. Do not add an empty placeholder. Transcribe for as long as the session lasts. One pull request contains every page from that run.
 
-The filename is `text/<volume>/<scan>.md`. The scan number is zero-padded to four digits. Scan 135 of volume `01-AB` is `text/01-AB/0135.md`. The worked pages already in the tree are `text/01-AB/0133.md` (folio 109) and `text/01-AB/0134.md` (folio 110). Leave them unless you are correcting a reading.
+The filename is `text/<volume>/<scan>.md`. The scan number is zero-padded to four digits. Scan 135 of volume `01-AB` is `text/01-AB/0135.md`. The worked pages already in the tree are `text/01-AB/0133.md` (folio 109) and `text/01-AB/0134.md` (folio 110). Leave them unless you are correcting a reading. The next free scan in `01-AB` is 135.
 
 ## Write the file
 
@@ -92,12 +93,12 @@ Follow [SPEC.md](SPEC.md). Read the scan left column, then middle, then right.
 
 ## Check
 
-Run the page checker on the file you added. It must exit 0.
+Run the page checker on every file you added. It must exit 0. Pass them all in one command:
 
 ```bash
-python3 pagefile.py text/01-AB/0135.md
+python3 pagefile.py text/01-AB/0135.md text/01-AB/0136.md
 ```
 
-Use your own path. `python3 pagefile.py text/01-AB/0134.md` is the same command on a worked page.
+Use your own paths. `python3 pagefile.py text/01-AB/0134.md` is the same command on a worked page.
 
 Do not insert into SQLite as the contribution. `build.py` turns page files into a database later. It is not the way to record a page.

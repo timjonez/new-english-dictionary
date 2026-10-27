@@ -1,6 +1,6 @@
 # NED page files
 
-Page files are the source of the transcription. `data/ned.sqlite` is a database built from those files. A page is one scan: the unit a person can read against one image, and the unit a pull request can add without colliding with another page.
+Page files are the source of the transcription. `data/ned.sqlite` is a database built from those files. A page is one scan: the unit a person can read against one image. A pull request holds every page from one session.
 
 The scan image is the only text. Do not consult another edition, a transcription, or a website. Keep the printed spelling, including a printer's error. The reading rules below are the ones that decide what goes in a file. An agent follows [AGENTS.md](AGENTS.md).
 
@@ -113,7 +113,7 @@ An article that started on an earlier page stays open until a later page settles
 
 ## Contributing
 
-Add one page, or a short run of pages, in a pull request. Claim a page by adding its file. `draft` can merge before the second reading. The person who set `ok` is someone other than the person who wrote the file.
+Transcribe consecutive scans for as long as the session lasts. Put every finished page in one pull request. `draft` can merge before the second reading. The person who set `ok` is someone other than the person who wrote the file.
 
 `python3 pagefile.py text/01-AB/0134.md` exits 0 when the file follows this spec.
 

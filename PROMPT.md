@@ -1,5 +1,5 @@
 # NED contribution
 
-Read [AGENTS.md](AGENTS.md) and follow it. The contribution is one page file under `text/`. The format is [SPEC.md](SPEC.md). Check that file with `pagefile.py`.
+Read [AGENTS.md](AGENTS.md) and follow it. Keep transcribing pages for the whole session. One pull request holds every page from that run. The format is [SPEC.md](SPEC.md). Check the files with `pagefile.py`.
 
-Leave the database alone. Work on one page. Do not start other agents.
+Leave the database alone. Do not start other agents.
