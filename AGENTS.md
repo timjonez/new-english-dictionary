@@ -4,6 +4,15 @@ Add one missing page file. The contribution is that file. Do not insert into SQL
 
 The format is [SPEC.md](SPEC.md). A person adding a page by hand starts at [README.md](README.md).
 
+## What to do
+
+- Transcribe from the Archive.org scan only. Do not consult another edition, transcription, or website.
+- Write one page file, and do not insert into SQLite as the contribution.
+- Run the page checker.
+- Claim a page by adding its missing file.
+- Do not transcribe the low-resolution `07-OP` scan or the 1933 supplement.
+- Do not redo `01-AB` scans 25–132, which are already transcribed in the local database and are not page files yet.
+
 ## Scan only
 
 Transcribe from the Archive.org scan only. Do not consult another edition, a transcription, or a website. Ignore the Internet Archive OCR text. Keep the printed spelling, including a printer's error.

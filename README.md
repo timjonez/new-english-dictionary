@@ -4,7 +4,7 @@ Page files for Murray's New English Dictionary (OED1, 1888–1928). The transcri
 
 ## Add a page
 
-The format is [SPEC.md](SPEC.md). An agent follows [AGENTS.md](AGENTS.md).
+The format document is [SPEC.md](SPEC.md). The checker command is `python3 pagefile.py`. The agent document is [AGENTS.md](AGENTS.md).
 
 1. Choose a scan that has no file under `text/`. `01-AB` scans 25–132 are already transcribed and are reserved. Do not transcribe the low-resolution `07-OP` scan or the 1933 supplement.
 2. Write `text/<volume>/<scan>.md` from the Archive.org scan, in the form SPEC.md describes.
