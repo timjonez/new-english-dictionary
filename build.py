@@ -15,7 +15,28 @@ from dataclasses import dataclass
 from pathlib import Path
 
 import pagefile
-from next_page import VOLUMES
+
+# Scan order for the core volumes, then the supplement. The supplement stays
+# out of the public tree until its rights are settled; the order is here so a
+# checkout can build without the local session tools.
+VOLUMES = (
+    "01-AB",
+    "02-C",
+    "03-DE",
+    "04-FG",
+    "05p1-H",
+    "05p2-IJK",
+    "06p1-L",
+    "06p2-MN",
+    "07-OP",
+    "08p1-QR",
+    "08p2-SSH",
+    "09p1-SiSqSt",
+    "09p2-SuSzTTh",
+    "10p1-TiTzU",
+    "10p2-VWXYZ",
+    "11-sup",
+)
 
 ROOT = Path(__file__).resolve().parent
 SOURCE_DB = ROOT / "data" / "ned.sqlite"

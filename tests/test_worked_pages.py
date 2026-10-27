@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import shutil
 import sqlite3
 import subprocess
 import sys
@@ -46,14 +47,22 @@ class WorkedPagesTest(unittest.TestCase):
         joined = adhesion + "\n" + folio_110.continues
 
         with tempfile.TemporaryDirectory() as tmp:
+            checkout = Path(tmp) / "checkout"
+            checkout.mkdir()
+            # A published tree has build.py and pagefile.py, not next_page.py.
+            for name in ("build.py", "pagefile.py"):
+                shutil.copy(ROOT / name, checkout / name)
+            shutil.copytree(ROOT / "text", checkout / "text")
+            self.assertFalse((checkout / "next_page.py").exists())
             out = Path(tmp) / "built.sqlite"
-            result = run(["build.py", "-o", str(out)])
+            result = run(["build.py", "-o", str(out)], cwd=checkout)
             self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertNotIn("ModuleNotFoundError", result.stderr)
             self.assertIn("2 pages", result.stdout)
             self.assertIn("51 words", result.stdout)
             self.assertTrue(out.is_file())
 
-            again = run(["build.py", "-o", str(out)])
+            again = run(["build.py", "-o", str(out)], cwd=checkout)
             self.assertNotEqual(again.returncode, 0)
             self.assertIn("refusing to overwrite", again.stderr)
 
