@@ -7,3 +7,6 @@ data/
 # Bytecode
 __pycache__/
 *.py[cod]
+
+# uv
+.venv/

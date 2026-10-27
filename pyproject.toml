@@ -1,0 +1,8 @@
+[project]
+name = "new-english-dictionary"
+version = "0.1.0"
+description = "Page-file transcription of Murray's New English Dictionary"
+readme = "README.md"
+license = "CC0-1.0"
+requires-python = ">=3.10"
+dependencies = []

@@ -57,9 +57,13 @@ class WorkedPagesTest(unittest.TestCase):
             checkout = Path(tmp) / "checkout"
             checkout.mkdir()
             # A published tree has build.py and pagefile.py, not next_page.py.
+            # Only the two worked pages, so later scans do not change this join.
             for name in ("build.py", "pagefile.py"):
                 shutil.copy(ROOT / name, checkout / name)
-            shutil.copytree(ROOT / "text", checkout / "text")
+            worked = checkout / "text" / "01-AB"
+            worked.mkdir(parents=True)
+            shutil.copy(PAGE_109, worked / PAGE_109.name)
+            shutil.copy(PAGE_110, worked / PAGE_110.name)
             self.assertFalse((checkout / "next_page.py").exists())
             out = Path(tmp) / "built.sqlite"
             result = run(["build.py", "-o", str(out)], cwd=checkout)
