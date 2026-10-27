@@ -85,11 +85,11 @@ Do this before transcribing. Two sessions that both start at the next free scan 
 gh pr list --repo timjonez/new-english-dictionary --state open --json number,title,updatedAt,isDraft
 ```
 
-A claim is an open pull request whose title is a volume and an inclusive scan range, such as `01-AB 135-160`.
+A claim is an open pull request whose title is a volume and an inclusive scan range, such as `01-AB 142-160`.
 
 2. Also skip scans that already have a file under `text/`, all of `07-OP`, and all of `11-sup`.
 
-3. Pick a contiguous block you expect to finish in this session. Do not claim a whole volume. Start at the first scan in that volume that has no file under `text/` and is not already claimed.
+3. Pick a contiguous block you expect to finish in this session. Do not claim a whole volume. Start at the first scan in that volume that has no file under `text/` and is not already claimed. In `01-AB` the files run through scan 141, so the next scan is 142.
 
 4. A claim with no push for 48 hours has expired. `updatedAt` is the last activity. Comment on that pull request, close it, and claim the range yourself:
 
@@ -98,12 +98,12 @@ gh pr comment NUMBER --repo timjonez/new-english-dictionary --body "This claim e
 gh pr close NUMBER --repo timjonez/new-english-dictionary
 ```
 
-5. On a new branch, add `claims/<volume>-<start>-<end>.md` and open a draft pull request whose title is the range. For scans 135–160 of `01-AB` the file is `claims/01-AB-0135-0160.md`:
+5. On a new branch, add `claims/<volume>-<start>-<end>.md` and open a draft pull request whose title is the range. For scans 142–160 of `01-AB` the file is `claims/01-AB-0142-0160.md`:
 
 ```markdown
 ---
 volume: 01-AB
-start: 135
+start: 142
 end: 160
 claimed: 2026-10-27T18:00:00Z
 ---
@@ -112,14 +112,14 @@ claimed: 2026-10-27T18:00:00Z
 `claimed` is the current UTC time. The pull request:
 
 ```bash
-gh pr create --repo timjonez/new-english-dictionary --draft --title "01-AB 135-160" --body "Claiming this range. Pages will follow on this branch."
+gh pr create --repo timjonez/new-english-dictionary --draft --title "01-AB 142-160" --body "Claiming this range. Pages will follow on this branch."
 ```
 
 6. Transcribe onto that branch, in order, and check every file. If you finish the block and still have usage, look again for a claim on the next scans, then raise `end` in the claim file and in the pull request title before you continue.
 
 7. Remove the claim file in this pull request once the page files are in it, so the claim file is not merged. Mark the pull request ready. The page files are the record after merge.
 
-The filename for a page is `text/<volume>/<scan>.md`. The scan number is zero-padded to four digits. Scan 135 of volume `01-AB` is `text/01-AB/0135.md`. Leave a scan that already has a file, including the worked pages 133 and 134, unless you are correcting a reading.
+The filename for a page is `text/<volume>/<scan>.md`. The scan number is zero-padded to four digits. Scan 142 of volume `01-AB` is `text/01-AB/0142.md`. Leave a scan that already has a file unless you are correcting a reading. `01-AB` scans 25–141 are those files.
 
 ## Write the file
 

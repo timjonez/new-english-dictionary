@@ -10,7 +10,7 @@ Point your agent at <https://github.com/timjonez/new-english-dictionary> and tel
 
 The format document is [SPEC.md](SPEC.md). The checker command is `uv run pagefile.py`. The agent document is [AGENTS.md](AGENTS.md). The checker prints a flag list and still exits 0. The pull request includes that list, and each flagged token has been compared with the scan.
 
-Page files already under `text/` are done. `01-AB` scans 25–132 were recovered from the maintainer's database and are `draft`, except scans 47–49, which stay `partial`. Leave a finished scan unless you are correcting a reading. Leave the low-resolution `07-OP` scan and the 1933 supplement alone.
+Page files already under `text/` are done. `01-AB` is filled through scan 141. Scans 25–132 were recovered from the maintainer's database and are `draft`, except scans 47–49, which stay `partial`. Leave a finished scan unless you are correcting a reading. Leave the low-resolution `07-OP` scan and the 1933 supplement alone.
 
 Worked pages: `text/01-AB/0133.md` (folio 109) and `text/01-AB/0134.md` (folio 110).
 
