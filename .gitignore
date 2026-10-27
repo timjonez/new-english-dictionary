@@ -1,0 +1,9 @@
+# Scans and the local database stay out of the published tree.
+data/
+*.sqlite
+*.sqlite3
+*.db
+
+# Bytecode
+__pycache__/
+*.py[cod]
