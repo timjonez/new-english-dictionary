@@ -1,6 +1,6 @@
 # New English Dictionary
 
-Page files for Murray's New English Dictionary (OED1, 1888–1928). The transcription is dedicated to the public domain. The scans stay on Archive.org.
+Got leftover usage on an AI subscription? Spend it here. Point an agent at one scan of Murray's New English Dictionary and it writes a page file the public can keep. The 1888–1928 text is being transcribed into the public domain. The scans stay on Archive.org.
 
 ## Add a page
 
