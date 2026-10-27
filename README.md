@@ -1,14 +1,41 @@
 # New English Dictionary
 
-Got leftover usage on an AI subscription? Spend it here. The way to contribute is to point your AI agent at this repository and let it run. It keeps transcribing scans of Murray's New English Dictionary into page files the public can keep. The 1888–1928 text is being transcribed into the public domain. The scans are [A New English Dictionary on Historical Principles, 10 volumes with supplement](https://archive.org/details/ANewEnglishDictionaryOnHistoricalPrinciples.10VolumesWithSupplement) on Archive.org. Volume `03-DE` in that item is only about half the volume, so D and E come from [oed03arch](https://archive.org/details/oed03arch).
+Got leftover usage on an AI subscription? Spend it here. The way to contribute is to point your AI agent at this repository and let it run. It keeps transcribing scans of Murray's New English Dictionary into a public-domain text anyone can use. The 1888–1928 text is being transcribed into the public domain. The scans are [A New English Dictionary on Historical Principles, 10 volumes with supplement](https://archive.org/details/ANewEnglishDictionaryOnHistoricalPrinciples.10VolumesWithSupplement) on Archive.org. Volume `03-DE` in that item is only about half the volume, so D and E come from [oed03arch](https://archive.org/details/oed03arch).
 
 Everything in this repository is [CC0 1.0](LICENSE). Use the transcription, the page files, and the code for anything.
 
+## Progress
+
+A snapshot as of 2026-10-27. There are 117 page files under `text/`, all in `01-AB`: scans 25–141. Of those, 112 are `draft`, 3 are `partial` (scans 47–49), and 2 are `ok` (scans 133 and 134). No other volume has a page file yet. The repository does not record how many scans each volume has, so these are counts, not percentages. To see the current state, list `text/` and read the `status` line at the top of each file.
+
 ## Contribute
+
+You need:
+
+- a GitHub account and `git`
+- [`uv`](https://docs.astral.sh/uv/), to run the checker
+- `qpdf`, to pull one page out of a volume PDF
+- `curl`, to download the volume PDF from Archive.org
+- `gh`, the GitHub CLI, which [AGENTS.md](AGENTS.md) uses to read and open pull requests
+- an AI coding agent that can run shell commands and read a PDF page
 
 Point your agent at <https://github.com/timjonez/new-english-dictionary> and tell it to follow [AGENTS.md](AGENTS.md). That file names each volume PDF and shows how to pull one page out of it with `qpdf`. Before it transcribes, it claims a scan range with a draft pull request, so two agents do not take the same pages. Let the agent keep going on that branch. It writes one file per scan under `text/` and checks each file with `uv run pagefile.py`. When it stops, that same pull request holds all of those pages.
 
-The format document is [SPEC.md](SPEC.md). The checker command is `uv run pagefile.py`. The agent document is [AGENTS.md](AGENTS.md). The checker prints a flag list and still exits 0. The pull request includes that list, and each flagged token has been compared with the scan.
+[PROMPT.md](PROMPT.md) is a prompt you can paste into your agent as it is:
+
+```text
+Read AGENTS.md and follow it. Keep transcribing pages for the whole session. One pull request holds every page from that run. The format is SPEC.md. Check the files with `uv run pagefile.py`.
+
+Leave the database alone. Do not start other agents.
+
+Read each finished page against the scan again. Paste the `uv run pagefile.py` flag list into the pull request. Keep a flagged spelling when the scan shows it.
+```
+
+The format document is [SPEC.md](SPEC.md). The checker command is `uv run pagefile.py`. The agent document is [AGENTS.md](AGENTS.md). The checker exits 0 even when it flags tokens it is unsure of. Compare each flagged token with the scan and include the flag list in your pull request.
+
+### Finding a free range
+
+Before you claim scans, look at the [open pull requests](https://github.com/timjonez/new-english-dictionary/pulls). A draft pull request titled with a volume and a scan range, such as `01-AB 200-220`, is a claim, and those scans are taken. A claim with no push for 48 hours has expired. Also skip any scan that already has a file under `text/`. Start at the first scan in a volume that has neither, and claim a block you expect to finish. [AGENTS.md](AGENTS.md) has the full steps.
 
 Page files already under `text/` are done. Scans 25–132 were recovered from the maintainer's database and are `draft`, except scans 47–49, which stay `partial`. Leave a finished scan unless you are correcting a reading. Leave the low-resolution `07-OP` scan and the 1933 supplement alone.
 
