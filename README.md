@@ -6,7 +6,7 @@ Everything in this repository is [CC0 1.0](LICENSE). Use the transcription, the 
 
 ## Contribute
 
-Point your agent at <https://github.com/timjonez/oxford-english-dictionary> and tell it to follow [AGENTS.md](AGENTS.md). The agent reads one page from the [Archive.org item](https://archive.org/details/ANewEnglishDictionaryOnHistoricalPrinciples.10VolumesWithSupplement), adds one file under `text/`, and checks it with `python3 pagefile.py`. Open a pull request with that file.
+Point your agent at <https://github.com/timjonez/oxford-english-dictionary> and tell it to follow [AGENTS.md](AGENTS.md). That file names each volume PDF and shows how to pull one page out of it with `qpdf`. The agent transcribes that page, adds one file under `text/`, and checks it with `python3 pagefile.py`. Open a pull request with that file.
 
 The format document is [SPEC.md](SPEC.md). The checker command is `python3 pagefile.py`. The agent document is [AGENTS.md](AGENTS.md).
 

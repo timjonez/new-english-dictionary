@@ -25,6 +25,49 @@ https://archive.org/details/ANewEnglishDictionaryOnHistoricalPrinciples.10Volume
 
 https://archive.org/details/oed03arch
 
+## Take one page out of a volume
+
+Each volume is one PDF. The scan number is that PDF's page number, counting from 1. Scan 135 of `01-AB` is page 135 of the A–B file, and the transcription is `text/01-AB/0135.md`. The printed folio is a different number. It goes in the header. Page 1 of the PDF is the first scan, even when that scan is a title page.
+
+Download the image PDF named here. Leave files whose names end in `_text.pdf` alone. Those are OCR text. Leave `00.NEDHP.PropPub.PhilSoc.1959..pdf` alone. That pamphlet is not a dictionary volume.
+
+| Volume | PDF |
+|---|---|
+| `01-AB` | `01.NEDHP.AB.Oxford.Murray.1888..pdf` |
+| `02-C` | `02.NEDHP.C.Oxford.Murray.1888...pdf` |
+| `03-DE` | `oed03arch.pdf` on item `oed03arch` |
+| `04-FG` | `04.NEDHP.FG.Oxford.Murray.1901..pdf` |
+| `05p1-H` | `05.p1.NEDHP.Oxford.Murray.1901..pdf` |
+| `05p2-IJK` | `05.p2.NEDHP.IJK.Oxford.Murray.1901..pdf` |
+| `06p1-L` | `06.p1.NEDHP.L.Oxford.Murray.1903..pdf` |
+| `06p2-MN` | `06.p2.NEDHP.MN.Oxford.Murray.1908..pdf` |
+| `07-OP` | `07.NEDHP.OP.Oxford.Murray.1909..pdf` |
+| `08p1-QR` | `08.p1.NEDHP.QR.Oxford.Murray.1914..pdf` |
+| `08p2-SSH` | `08.p2.NEDHP.SSH.Oxford.Murray.1914..pdf` |
+| `09p1-SiSqSt` | `09.p1.NEDHP.SiSqSt.Oxford.Murray.1919..pdf` |
+| `09p2-SuSzTTh` | `09.p2.NEDHP.SuSzTTh.Oxford.Murray.1919..pdf` |
+| `10p1-TiTzU` | `10.p1.NEDHP.TiTzU.Oxford.Murray.1926...pdf` |
+| `10p2-VWXYZ` | `10.p2.NEDHP.VWXYZ.Oxford.Murray.1928..pdf` |
+| `11-sup` | `11.NEDHP.sup.Oxford.Murray.1933..pdf` |
+
+The download URL is the item, a slash, and the file name. For `01-AB` page 135:
+
+```bash
+curl -L -o 01-AB.pdf "https://archive.org/download/ANewEnglishDictionaryOnHistoricalPrinciples.10VolumesWithSupplement/01.NEDHP.AB.Oxford.Murray.1888..pdf"
+qpdf 01-AB.pdf --pages . 135 -- page-0135.pdf
+```
+
+For `03-DE` the item is `oed03arch` and the file is `oed03arch.pdf`:
+
+```bash
+curl -L -o 03-DE.pdf "https://archive.org/download/oed03arch/oed03arch.pdf"
+qpdf 03-DE.pdf --pages . 1 -- page-0001.pdf
+```
+
+`qpdf` writes a one-page PDF. Read that page, the whole page, left column then middle then right. Keep the downloaded volume and the one-page PDF out of git.
+
+`07-OP` and `11-sup` are in the table so the file names are not guessed. Do not transcribe them.
+
 ## Do not transcribe these
 
 - Do not transcribe the low-resolution `07-OP` scan. It is a letter-size JPEG at about 77 ppi. Leave it until a substitute scan is named.

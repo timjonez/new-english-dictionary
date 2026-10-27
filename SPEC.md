@@ -26,7 +26,7 @@ text/<volume>/<scan>.md
 10p1-TiTzU  10p2-VWXYZ
 ```
 
-`<scan>` is the scan number zero-padded to four digits, matching `data/pages/<volume>/page-NNNN.pdf`. Scan 134 is `text/01-AB/0134.md`. The header writes that same number as `134`.
+`<scan>` is the 1-based page number of that volume's PDF, zero-padded to four digits. [AGENTS.md](AGENTS.md) names the PDF for each volume. Scan 134 is `text/01-AB/0134.md`. The header writes that same number as `134`.
 
 A missing file means the page is free. Do not commit empty placeholders. A skip is a real file with `status: skip` and a reason, so a title page does not look like a hole.
 
