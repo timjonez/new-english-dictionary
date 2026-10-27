@@ -106,6 +106,49 @@ class WorkedPagesTest(unittest.TestCase):
         self.assertNotEqual(refused.returncode, 0)
         self.assertIn("refusing to overwrite data/ned.sqlite", refused.stderr)
 
+    def test_recovered_folios_join_adevism(self) -> None:
+        recovered = ROOT / "text" / "01-AB"
+        for scan in range(25, 133):
+            path = recovered / f"{scan:04d}.md"
+            page = pagefile.parse(path.read_text(encoding="utf-8"))
+            pagefile.check_path(page, path)
+            self.assertEqual(page.scan, scan)
+            self.assertEqual(page.folio, str(scan - 24))
+            if scan in (47, 48, 49):
+                self.assertEqual(page.status, "partial")
+            else:
+                self.assertEqual(page.status, "draft")
+        first = pagefile.parse((recovered / "0025.md").read_text(encoding="utf-8"))
+        self.assertIsNone(first.continues)
+        folio_108 = pagefile.parse((recovered / "0132.md").read_text(encoding="utf-8"))
+        folio_109 = pagefile.parse(PAGE_109.read_text(encoding="utf-8"))
+        adevism = next(body for headword, body in folio_108.entries if headword == "Adevism")
+        self.assertNotIn("MAX MÜLLER", adevism)
+        self.assertTrue(folio_109.continues.startswith("1878 MAX MÜLLER"))
+        account = pagefile.parse((recovered / "0087.md").read_text(encoding="utf-8"))
+        account_next = pagefile.parse((recovered / "0088.md").read_text(encoding="utf-8"))
+        self.assertTrue(account.entries[-1][1].endswith("like-"))
+        self.assertTrue(account_next.continues.startswith("wise Accompt"))
+
+        with tempfile.TemporaryDirectory() as tmp:
+            checkout = Path(tmp) / "checkout"
+            checkout.mkdir()
+            for name in ("build.py", "pagefile.py"):
+                shutil.copy(ROOT / name, checkout / name)
+            worked = checkout / "text" / "01-AB"
+            worked.mkdir(parents=True)
+            for name in ("0132.md", "0133.md", "0134.md"):
+                shutil.copy(recovered / name, worked / name)
+            out = Path(tmp) / "built.sqlite"
+            result = run(["build.py", "-o", str(out)], cwd=checkout)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            con = sqlite3.connect(out)
+            stored = con.execute("SELECT text FROM words WHERE headword = 'Adevism'").fetchone()
+            adhesion = con.execute("SELECT text FROM words WHERE headword = 'Adhesion'").fetchone()
+            con.close()
+        self.assertEqual(stored[0], adevism + "\n" + folio_109.continues)
+        self.assertIn("accustomed policy.\n3. Psych.", adhesion[0])
+
 
 if __name__ == "__main__":
     unittest.main()

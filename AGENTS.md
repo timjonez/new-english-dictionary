@@ -13,7 +13,7 @@ The format is [SPEC.md](SPEC.md). A person adding pages by hand starts at [READM
 - Run the page checker on every file.
 - Put every finished page from the session in that same pull request.
 - Do not transcribe the low-resolution `07-OP` scan or the 1933 supplement.
-- Do not redo `01-AB` scans 25–132, which are already transcribed in the local database and are not page files yet.
+- Do not redo a scan that already has a file under `text/`.
 
 ## Scan only
 
@@ -74,7 +74,6 @@ qpdf 03-DE.pdf --pages . 1 -- page-0001.pdf
 
 - Do not transcribe the low-resolution `07-OP` scan. It is a letter-size JPEG at about 77 ppi. Leave it until a substitute scan is named.
 - Do not transcribe the 1933 supplement (`11-sup`).
-- Do not redo `01-AB` scans 25–132. Those pages are already transcribed in the maintainer's local database and are not page files in this repository yet. Do not add `text/01-AB/0025.md` through `text/01-AB/0132.md`.
 
 ## Claim a range first
 
@@ -88,9 +87,9 @@ gh pr list --repo timjonez/new-english-dictionary --state open --json number,tit
 
 A claim is an open pull request whose title is a volume and an inclusive scan range, such as `01-AB 135-160`.
 
-2. Also skip scans that already have a file under `text/`, the reserved `01-AB` scans 25–132, all of `07-OP`, and all of `11-sup`.
+2. Also skip scans that already have a file under `text/`, all of `07-OP`, and all of `11-sup`.
 
-3. Pick a contiguous block you expect to finish in this session. Do not claim a whole volume. In `01-AB` the worked pages are scans 133 and 134, so the next free scan is 135 unless an open pull request already claims it.
+3. Pick a contiguous block you expect to finish in this session. Do not claim a whole volume. Start at the first scan in that volume that has no file under `text/` and is not already claimed.
 
 4. A claim with no push for 48 hours has expired. `updatedAt` is the last activity. Comment on that pull request, close it, and claim the range yourself:
 
@@ -120,7 +119,7 @@ gh pr create --repo timjonez/new-english-dictionary --draft --title "01-AB 135-1
 
 7. Remove the claim file in this pull request once the page files are in it, so the claim file is not merged. Mark the pull request ready. The page files are the record after merge.
 
-The filename for a page is `text/<volume>/<scan>.md`. The scan number is zero-padded to four digits. Scan 135 of volume `01-AB` is `text/01-AB/0135.md`. Leave scans 133 and 134 unless you are correcting a reading.
+The filename for a page is `text/<volume>/<scan>.md`. The scan number is zero-padded to four digits. Scan 135 of volume `01-AB` is `text/01-AB/0135.md`. Leave a scan that already has a file, including the worked pages 133 and 134, unless you are correcting a reading.
 
 ## Write the file
 
