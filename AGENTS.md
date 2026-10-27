@@ -137,10 +137,10 @@ Follow [SPEC.md](SPEC.md). Read the scan left column, then middle, then right.
 Run the page checker on every file you added. It must exit 0. Pass them all in one command:
 
 ```bash
-python3 pagefile.py text/01-AB/0135.md text/01-AB/0136.md
+uv run pagefile.py text/01-AB/0135.md text/01-AB/0136.md
 ```
 
-Use your own paths. `python3 pagefile.py text/01-AB/0134.md` is the same command on a worked page.
+Use your own paths. `uv run pagefile.py text/01-AB/0134.md` is the same command on a worked page.
 
 The checker prints `flags N` after the headwords. A valid file still exits 0. The next section says what to do with that list.
 

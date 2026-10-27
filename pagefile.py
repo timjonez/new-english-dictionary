@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Parse and check one NED page file. See SPEC.md.
 
-  python3 pagefile.py text/01-AB/0134.md
+  uv run pagefile.py text/01-AB/0134.md
 """
 
 from __future__ import annotations

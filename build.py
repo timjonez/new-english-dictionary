@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Build a SQLite database from text/ page files. See SPEC.md.
 
-  python3 build.py -o out.sqlite
+  uv run build.py -o out.sqlite
 
 The file written is a fresh database. This refuses to replace data/ned.sqlite.
 """

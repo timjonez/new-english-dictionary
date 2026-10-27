@@ -109,13 +109,13 @@ An article that started on an earlier page stays open until a later page settles
 - A page that starts with `:::entry`, or a `skip` or `unreadable` page, closes the open article with no further text.
 - A missing scan is a gap. The builder does not guess across it. A continuation on the far side of a gap is kept with the page and is not appended to an invented article. Filling the gap and building again joins it.
 
-`python3 pagefile.py` checks one file. `python3 build.py -o out.sqlite` reads `text/` and writes a fresh database. It refuses to replace `data/ned.sqlite`. The builder checks the chain across pages.
+`uv run pagefile.py` checks one file. `uv run build.py -o out.sqlite` reads `text/` and writes a fresh database. It refuses to replace `data/ned.sqlite`. The builder checks the chain across pages.
 
 ## Contributing
 
 Claim a scan range with a draft pull request before transcribing it, as [AGENTS.md](AGENTS.md) describes. Transcribe that range for as long as the session lasts. Put every finished page in that same pull request. `draft` can merge before the second reading. The person who set `ok` is someone other than the person who wrote the file.
 
-`python3 pagefile.py text/01-AB/0134.md` exits 0 when the file follows this spec. It also prints `flags N`, a list of tokens to compare with the scan. A pull request includes that list. A flag leaves the exit status at 0.
+`uv run pagefile.py text/01-AB/0134.md` exits 0 when the file follows this spec. It also prints `flags N`, a list of tokens to compare with the scan. A pull request includes that list. A flag leaves the exit status at 0.
 
 ## Worked example
 

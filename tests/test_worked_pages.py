@@ -21,7 +21,7 @@ PAGE_110 = ROOT / "text" / "01-AB" / "0134.md"
 
 def run(args: list[str], cwd: Path | None = None) -> subprocess.CompletedProcess[str]:
     return subprocess.run(
-        [sys.executable, *args],
+        ["uv", "run", *args],
         cwd=cwd or ROOT,
         text=True,
         capture_output=True,

@@ -1,6 +1,6 @@
 # NED page files
 
-Contributions are page files. Read [AGENTS.md](AGENTS.md). The format is [SPEC.md](SPEC.md). Check a file with `pagefile.py`.
+Contributions are page files. Read [AGENTS.md](AGENTS.md). The format is [SPEC.md](SPEC.md). Check a file with `uv run pagefile.py`.
 
 Leave the database alone. Keep transcribing pages for the whole session, then open one pull request with all of them. Do not start other agents.
 
