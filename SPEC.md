@@ -6,7 +6,7 @@ The scan image is the only text. Do not consult another edition, a transcription
 
 ## Rights
 
-The volumes dated 1888–1928 were published before 1930, so that text is in the public domain in the United States. The 1933 supplement stays out of this tree until its rights are settled. The United Kingdom term is a separate question. The transcription in `text/` is dedicated to the public domain. The scans are not in this tree. Archive.org hosts them:
+The volumes dated 1888–1928 were published before 1930, so that text is in the public domain in the United States. The 1933 supplement stays out of this tree until its rights are settled. The United Kingdom term is a separate question. The transcription in this repository, including `text/`, is dedicated under [CC0 1.0](LICENSE): anyone may use it for anything. The scans are not in this tree. Archive.org hosts them:
 
 - Core set: `ANewEnglishDictionaryOnHistoricalPrinciples.10VolumesWithSupplement`
 - `03-DE` in this dump is about half a volume. The substitute scan is `oed03arch`.

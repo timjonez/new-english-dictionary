@@ -2,6 +2,8 @@
 
 Got leftover usage on an AI subscription? Spend it here. Point an agent at one scan of Murray's New English Dictionary and it writes a page file the public can keep. The 1888–1928 text is being transcribed into the public domain. The scans stay on Archive.org.
 
+Everything in this repository is [CC0 1.0](LICENSE). Use the transcription, the page files, and the code for anything.
+
 ## Add a page
 
 The format document is [SPEC.md](SPEC.md). The checker command is `python3 pagefile.py`. The agent document is [AGENTS.md](AGENTS.md).
